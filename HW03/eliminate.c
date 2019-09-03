@@ -20,54 +20,65 @@ void eliminate(int n, int k)
       fprintf(stderr, "malloc fail\n");
       return;
     }
-  // initialize all elements
-  int i; //iterations
-  int left = n; //How many people left
-  int pl = 0;//Place in array at end of for loop
-  int count;
+    // initialize all elements
+    int i; //iterations
+    int left = n; //How many people left
+    int pl = 0;//Place in array at end of for loop
+    int count;
+    int it;
+    
+    // counting to k
   
-  // counting to k
-  printf("Left %d\n", left);
-  
-  while (left != 1) //Loops until only 1 person left
-    {
-      count = 1;
+    while (left != 1) //Loops until only 1 person left
+        {
+            count = 1;
 
-      for (i = pl; i != -1; i++) //Goes through array starting from last position
-	    {   
-	      if (i >= n) //Check if out of array bounds
-	        i = 0;
-
-	      if (arr[i] == 'x') //Skip if marked x
-	        i++;
+            for (i = pl; i != -1; i++) //Goes through array starting from last position
+	        {   
+	            for (it = i; it != -1; it++)
+	            {
+	                if (i >= n) //Check if out of array bounds
+	                {
+	                    i = 0;
+                        }
+                        if (arr[i] == 'X') //Skip if marked x
+	                {
+	                    i++;
+	                }
+	                if (i >= n) //Check if out of array bounds again
+	                {
+	                    i = 0;
+                        }
+	                if (arr[i] != 'X')
+	                {
+	                    it = -2;
+	                }
+	            }
+	            
+	            arr[i] = count;
+	            count++;
 	  
-	      arr[i] = count;
-	      count++;
-	  
-	      if (arr[i] == k)
-	     { 
-	        arr[i] = 'x'; //Elimated by inserting value of x
-	        pl = i + 1; //New start place in array
-	        printf("%d\n", i);
-	        left--;
-	        i = -1; //Exits for loop
-	     }
-	    }
-    }
+	            if (arr[i] == k)
+	            { 
+	                arr[i] = 'X'; //Elimated by inserting value of x
+	                pl = i + 1; //New start place in array
+	                printf("%d\n", i);
+	                left--;
+	                i = -2; //Exits for loop
+	            }
+	        }
+        }
   // mark the eliminated element
   // print the index of the marked element
   // repeat until only one element is unmarked
 
-
   // print the last one
-
+  
   for (i = 0; i < n; i++)
     {
-      if (arr[i] != 'x')
-	printf("%d\n", i);
+      if (arr[i] != 'X')
+	 printf("%d\n", i);
     }
-
-
   // release the memory of the array
   free (arr);
 }
