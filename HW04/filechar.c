@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #ifdef TEST_COUNTCHAR
-bool countChar(char * filename, int *counts, int size)
+bool countChar(char * filename, int * counts, int size)
 {
   // open a file whose name is filename for reading
   FILE *fle = fopen(filename, "r");
@@ -59,7 +59,7 @@ bool countChar(char * filename, int *counts, int size)
 #endif
 
 #ifdef TEST_PRINTCOUNTS
-void printCounts(int *counts, int size)
+void printCounts(int * counts, int size)
 {
   // print the values in counts in the following format
   // each line has three items:
@@ -78,13 +78,12 @@ void printCounts(int *counts, int size)
       if ((i >= 'a' && i <= 'z') || (i >= 'A' && i <= 'Z'))
 	{
 	  onechar = i;
-	  printf("%d, %c, %d\n", i, onechar, counts[i]);
 	}
       else
 	{
-	  printf("%d, , %d\n", i, counts[i]);
+	  onechar = 32;
 	}
-      
+      printf("%d, %c, %d\n", i, onechar, counts[i]);
     }
       
   // ind, onechar, counts[ind]
