@@ -19,20 +19,18 @@ bool addFile(char * filename, int * sum)
     }
   // if fopen succeeds, read integers using fscan (do not use fgetc)
   //
-  int num;
-  
-  while (1)
+  int* num;   
+  int i = 1;
+  num = &i;
+
+  while (fscanf(fle, "%d", num) != EOF)
     {
-      num = fscanf(fle);
-      if (num == EOF)
-	{
-	  break;
-	}
-      *sum = *sum + num;
+      *sum = *sum + *num;
     }
-  // * sum stores the result of adding all numbers from the file
+  //* sum stores the result of adding all numbers from the file
   // When no more numbers can be read, fclose, return true
   //
+  fclose(fle);
   return true;
 }
 #endif
@@ -43,10 +41,19 @@ bool writeSum(char * filename, int sum)
 {
   // open a file whose name is filename for writing
   FILE *fle = fopen(filename, "r");
+   if (fle == NULL)
+    {
+      return false;
+    }
+
+   fprintf(fle, "%d\n", sum);
   // if fopen succeeds, write sum as an integer using fprintf
   // fprintf should use one newline '\n'
   // fclose, return true
   //
+
+   fclose(fle);
   return true;
 }
+#endif
 #endif
