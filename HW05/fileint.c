@@ -19,13 +19,11 @@ bool addFile(char * filename, int * sum)
     }
   // if fopen succeeds, read integers using fscan (do not use fgetc)
   //
-  int* num;   
-  int i = 1;
-  num = &i;
-
-  while (fscanf(fle, "%d", num) != EOF)
+  int num;   
+  
+  while (fscanf(fle, "%d", &num) != EOF)
     {
-      *sum = *sum + *num;
+      *sum += num;
     }
   //* sum stores the result of adding all numbers from the file
   // When no more numbers can be read, fclose, return true
@@ -40,7 +38,7 @@ bool addFile(char * filename, int * sum)
 bool writeSum(char * filename, int sum)
 {
   // open a file whose name is filename for writing
-  FILE *fle = fopen(filename, "r");
+  FILE *fle = fopen(filename, "w");
    if (fle == NULL)
     {
       return false;
