@@ -56,4 +56,3 @@ bool writeSum(char * filename, int sum)
   return true;
 }
 #endif
-#endif
