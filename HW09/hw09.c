@@ -61,10 +61,10 @@ bool readData(char * filename, int * * arr, int * size)
   // size of int  
 
   // allocate memory for the array
-  **arr = malloc(sizeof(int) * *size);
+  *arr = malloc(sizeof(int) * *size);
 
   // if malloc fails, fclose and return false
-  if (**arr == NULL)
+  if (*arr == NULL)
   {
 	  fclose(fle);
 	  return false;
@@ -75,7 +75,7 @@ bool readData(char * filename, int * * arr, int * size)
   num = fread(*arr, sizeof(int), *size, fle);
   if (num != *size)
   {
-	  free(**arr);
+	  free(*arr);
 	  fclose(fle);
 	  return false;
   }
@@ -102,35 +102,29 @@ bool readData(char * filename, int * * arr, int * size)
 bool writeData(char * filename, const int * arr, int size)
 {
   // fopen for write
-
-
-
+  FILE * fle = fopen(filename, "w");
   // if fopen fails, return false
-
-
-
-  // use fwrite to write the entire array to a file
-
-
-
-  // check whether all elements of the array have been written
-
-
-
-  // fclose
-
-
+  if (fle == NULL)
+  {
+	  return false;
+  }
   
+  // use fwrite to write the entire array to a file
+  if (fwrite(arr, sizeof(int), size, fle) == size)
+  {
+	  fclose(fle);
+	  return true;
+  }
+  else
+  {
+	  fclose(fle);
+	  return false;
+  }
+  
+  // check whether all elements of the array have been written
+  // fclose  
   // if not all elements have been written, return false
-
-
-
   // if all elements have been written, return true
-
-
-
-
-
 }
 #endif
 
@@ -157,29 +151,62 @@ static void merge(int * arr, int l, int m, int r)
   // This part is used for grading. 
   printInput("Merge in", arr, l, m, r);
 #endif
-
+   int i;
+   int it = 0;
+   int  r1 = m - l + 1;
+   int r2 = r - m;
+   int ind  = l;
   // if one or both of the arrays are empty, do nothing
-
-
-
-
+   if ((l <= m) && ((m+1) <= r))
+   {
+	   int * arr1 = malloc(sizeof(int) * r1);
+	   int * arr2 = malloc(sizeof(int) * r2);
+		
+	   for ( i=0; i < r1; i++)
+	   {
+		   arr1[i] = arr[l+i];
+	   }
+	   for ( i=0; i < r2; i++)
+	   {
+		   arr2[i] = arr[m + 1 + i];
+	   }
+    i = 0;
+	while ( i < r1 &&  it < r2)
+	{
+		if (arr1[i] <= arr2[it])
+		{
+			arr[ind] = arr1[i];
+			i++;
+		}
+		else
+		{
+			arr[ind] = arr2[it];
+			it++;
+		}
+		ind++;
+	}
+	while (i < r1)
+	{
+		arr[ind] = arr1[i];
+		i++;
+		ind++;
+	}
+	while (it <  r2)
+	{
+		arr[ind] = arr2[it];
+		it++;
+		ind++;
+	}
+	free(arr1);
+	free(arr2);
+   }
+   
 
   // Hint: you may consider to allocate memory here.
   // Allocating additiional memory makes this function easier to write
 
-  
-
-
   // merge the two parts (each part is already sorted) of the array
   // into one sorted array
-
-  
-
-
-
-
-  
-
 
   // the following should be at the bottom of the function
 #ifdef DEBUG
@@ -207,23 +234,20 @@ void mergeSort(int arr[], int l, int r)
   // This part is used for grading. 
   printInput("mergeSort", arr, l, r, -1);
 #endif
-   
-  // if the array has no or one element, do nothing
-  if ((l + r) <= 1)
-  {
-	 
-  }
- else 
- {
-	 mergeSort(arr, l, ((r/2) - 1));
-	 mergeSort(arr, (r/2), r );
-	 merge(arr, l, (r/2), r);
- }	 
-
+   // if the array has no or one element, do nothing
+  if (r <= l)
+ {	 
+	return;
+ }
+     int m = (r + l)/2;
+	 mergeSort(arr, l, m);
+	 mergeSort(arr, m+1, r );
+	 merge(arr, l, m, r);
+ 
 
   // divide the array into two arrays
   // call mergeSort with each array
   // merge the two arrays into one
-  return;
 } 
 #endif
+
