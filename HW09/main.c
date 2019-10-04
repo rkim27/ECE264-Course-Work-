@@ -33,11 +33,11 @@ int main(int argc, char * * argv)
 
   // call mergeSort
   // be careful about the arguments
-  mergeSort(arr, 0, size);
+  mergeSort(arr, 0, size-1);
 
 
   // write results to the output file
-  rtv = writeData(....);
+  rtv = writeData(argv[2], arr, size);
   free (arr);
 
   if (rtv == false)
