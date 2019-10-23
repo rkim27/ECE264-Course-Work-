@@ -112,16 +112,16 @@ void eliminate(ListNode * head, int valk)
 		printf("%d\n", todelete->value);
 		}
 		#endif
-		head = deleteNode(head, todelete);
+		//head = deleteNode(head, todelete);
 		if (ptr->next == NULL)
 		{
 			ptr = head;
 		}
 		else
 		{
-			ptr= ptr->next;
+			ptr = ptr->next;
 		}
-			
+		head = deleteNode(head, todelete);
 	}while (head->next != NULL);
 	printf("%d\n", head->value);
 	//#ifdef DEBUG
@@ -133,7 +133,7 @@ void eliminate(ListNode * head, int valk)
 	//printListNode (todelete); 
 	//}
 	//#endif
-
+	free(head);
 }
 #endif
 
