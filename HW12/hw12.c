@@ -28,7 +28,8 @@ void printListNode(ListNode * head)
 void create(ListNode ** head, int i);
 void create(ListNode ** head, int i)
 {
-	ListNode * node = malloc(sizeof(ListNode));
+	ListNode * node = NULL;
+	node = malloc(sizeof(ListNode));
 	node -> next = (*head);
 	node -> value = i;
 	(*head) = node;
@@ -44,6 +45,7 @@ ListNode * createList(int valn)
 	ListNode * head = NULL;
 	head = malloc(sizeof(ListNode));
 	head -> value = valn - 1;
+	head -> next = NULL;
 	for (i = valn-2; i >= 0; i--)
 	{
 		create(&head, i);
@@ -63,39 +65,74 @@ ListNode * createList(int valn)
 // print the values of the nodes to be deleted
 void eliminate(ListNode * head, int valk)
 {
-	int count= 0;
+	int count;
 	ListNode * ptr = head;
-	while(ptr->next != NULL)
+	do //Ends when all are deleted
 	{
-		while (count != valk)
+		count = 1;
+		while (count < valk)
 		{
-			count++;
-			if (count == valk)
-			{
-				count = 0;
-				ListNode * p = ptr;
-				ptr = ptr -> next;
-				#ifdef DEBUG
-				// this #ifdef ... #endif should be inside the condition *BEFORE* a
-				// node' value is printed and it is deleted
-				ListNode * todelete = p;
-				printListNode (todelete); 
-				#endif
-				deleteNode(head, p);
-			}
-			if ((ptr -> next) == NULL)
-			{
-				ptr = head;
-			}
-			if (count != valk)
-			{
-				ptr = ptr -> next;
-			}
+			//count++;
+			//if (count == valk)
+			//{
+				//count = 0;
+				//ListNode * p = ptr;
+				//ptr = ptr -> next; //seg fault, at end of list it cannot go to next since there is nothing there
+				if (ptr->next == NULL) //Reach end of list, start over
+				{
+					ptr = head;
+				}
+				else
+				{
+					ptr = ptr->next;
+				}
+				count++;
+				//head = deleteNode(head, p);
+			//}
+			//else
+			//{				
+				//if (ptr->next == NULL) //Reach end of list, start over
+				//{
+					//ptr = head;
+				//}
+				//else 
+				//{
+					//ptr = ptr -> next; //Go to next node if havnt reached the count
+				//}
+			//}
 			
 		}
-	}
-	
-
+		#ifdef DEBUG
+		// this #ifdef ... #endif should be inside the condition *BEFORE* a
+		// node' value is printed and it is deleted
+		ListNode * todelete = ptr;
+		if (head->next != NULL) //Dont print if only 1 node left
+		{
+		printListNode (todelete); 
+		printf("%d\n", todelete->value);
+		}
+		#endif
+		head = deleteNode(head, todelete);
+		if (ptr->next == NULL)
+		{
+			ptr = head;
+		}
+		else
+		{
+			ptr= ptr->next;
+		}
+			
+	}while (head->next != NULL);
+	printf("%d\n", head->value);
+	//#ifdef DEBUG
+	// this #ifdef ... #endif should be inside the condition *BEFORE* a
+	// node' value is printed and it is deleted
+	//ListNode * todelete = p;
+	//if (ptr != NULL) //Dont print if only 1 node left
+	//{
+	//printListNode (todelete); 
+	//}
+	//#endif
 
 }
 #endif
@@ -117,7 +154,8 @@ void eliminate(ListNode * head, int valk)
 // the head). If this occurs, return the second node of the list.
 ListNode * deleteNode(ListNode * head, ListNode * todelete)
 {
-	ListNode * p = head -> next;
+	ListNode * ptr = head;
+	ListNode * prev = head;
 	if (head == NULL)
 	{
 		return NULL;
@@ -127,12 +165,35 @@ ListNode * deleteNode(ListNode * head, ListNode * todelete)
 		return head;
 	}
 	
+	while(ptr != todelete)
+	{
+		prev = ptr;
+		if (ptr->next == NULL)
+		{
+			ptr = head;
+		}
+		else
+		{
+			ptr = ptr->next;
+		}
+	}
+	if (ptr->next == NULL)
+	{
+		prev->next = NULL;
+		
+	}
+	else
+	{
+		prev->next = ptr->next;
+	}
 	if (head == todelete)
 	{
-		free(todelete);
-		return p;
+		free(ptr);
+		ptr = prev->next;
+		return ptr;
 	}
-	free(todelete);
+	free(ptr);
+	ptr = prev->next;
 	return head;
 }
 #endif
