@@ -97,9 +97,12 @@ int find(int a[], int start, int end, int value)
 #endif
 
 #ifdef TEST_PRINTPATH
+int height(Tree * tr, int val);
 void printPath(Tree * tr, int val)
 {
-	int arr[3] = {0};
+	int h = height(tr, val);
+	int *arr= NULL; 
+	arr = malloc(sizeof(TreeNode)*h);
 	int i = 0;
 	int it;
 	TreeNode * tn = tr->root;
@@ -117,6 +120,23 @@ void printPath(Tree * tr, int val)
 		
 		printf("%d\n", arr[it]);
 	}
+	free(arr);
 	return;
+}
+int height(Tree * tr, int val)
+{
+	int h = 0;
+	TreeNode * tn = tr->root;
+	if (tn == NULL) 
+    {
+      // cannot find 
+      return 0;
+    }
+	do
+	{
+		tn = tn->left;
+		h++;
+	}while(tn->left != NULL);
+	return h;
 }
 #endif
